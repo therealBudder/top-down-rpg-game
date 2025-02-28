@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,11 +9,19 @@ public class CameraController : MonoBehaviour {
 
     private float xMovement;
     private float yMovement;
+
+    private Vector3 offset;
+    private Vector3 newPos;
+    
+    [SerializeField]
+    private Transform lookAtTarget;
+
+    [SerializeField] 
+    private Transform followTarget;
     
     // Start is called before the first frame update
-    void Start()
-    {
-        
+    void Start() {
+        offset = lookAtTarget.position - transform.position;
     }
 
     // Update is called once per frame
@@ -20,10 +29,19 @@ public class CameraController : MonoBehaviour {
     {
         xMovement = Input.GetAxis("Horizontal");
         yMovement = Input.GetAxis("Vertical");
+    }
+
+    private void LateUpdate() {
+        // transform.LookAt(lookAtTarget);
+
+        newPos = transform.position;
+        newPos = lookAtTarget.position - offset;
+        // newPos.z = lookAtTarget.position.z - offset.z;
+        transform.position = newPos;
         
         Move();
     }
-    
+
     void Move() {
 
         Vector3 movementY = Vector3.forward * yMovement;
