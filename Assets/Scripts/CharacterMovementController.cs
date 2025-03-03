@@ -52,14 +52,20 @@ public class CharacterMovementController : MonoBehaviour {
         jump = Input.GetKeyDown(KeyCode.Space);
         attack = Input.GetKeyDown(KeyCode.Mouse0);
         guard = Input.GetKey(KeyCode.Mouse1);
-        
-        
-        if (xMovement != 0 || yMovement != 0) {animator.SetBool("walking", true);}
-        else {animator.SetBool("walking", false);}
 
-        animator.SetBool("running", run);
+
+        if (xMovement != 0 || yMovement != 0) {
+            animator.SetBool("walking", true);
+            animator.SetBool("running", run);
+        }
+        else {
+            animator.SetBool("walking", false);
+            animator.SetBool("running", false);
+        }
+
+        
         animator.SetBool("jumping", jump);
-        animator.SetBool("attacking", attack);
+        if (attack) {animator.SetTrigger("attacking");}
         animator.SetBool("guarding", guard);
 
     }
