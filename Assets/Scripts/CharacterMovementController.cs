@@ -78,8 +78,8 @@ public class CharacterMovementController : MonoBehaviour {
 
     void Move() {
 
-        Vector3 movementY = Vector3.forward * yMovement;
-        Vector3 movementX = Vector3.right * xMovement;
+        Vector3 movementX = -Vector3.forward * xMovement;
+        Vector3 movementY = Vector3.right * yMovement;
 
         Vector3 movementDirection = movementX + movementY;
         
