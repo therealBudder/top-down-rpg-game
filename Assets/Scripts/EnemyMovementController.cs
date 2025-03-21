@@ -30,7 +30,7 @@ public class EnemyMovementController : MonoBehaviour {
         distance = Vector3.Distance(agent.transform.position, target.position);
         NavMeshPath navMeshPath = new NavMeshPath();
         
-        if (distance < attackDistance) {
+        if (distance < attackDistance && agent.CalculatePath(target.position, navMeshPath) && navMeshPath.status == NavMeshPathStatus.PathComplete) {
             agent.isStopped = true;
             animator.SetBool("Attack", true);
             animator.SetBool("Walk", false);
