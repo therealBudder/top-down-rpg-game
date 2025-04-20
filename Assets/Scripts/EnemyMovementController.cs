@@ -39,6 +39,12 @@ public class EnemyMovementController : MonoBehaviour {
         
         healthBar.value = health;
         
+        healthBar.gameObject.SetActive(false);
+
+        if (health < maxHealth) {
+            healthBar.gameObject.SetActive(true);
+        }
+        
         distance = Vector3.Distance(agent.transform.position, target.position);
         NavMeshPath navMeshPath = new NavMeshPath();
 
