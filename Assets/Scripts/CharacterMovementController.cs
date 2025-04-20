@@ -17,6 +17,7 @@ public class CharacterMovementController : MonoBehaviour {
     public bool canGetHit = true;
     public static bool isAttacking = false;
     public float attackCooldown = 0.5f;
+    public float attackDuration = 0.4f;
 
     public Slider healthBar;
     
@@ -114,7 +115,7 @@ public class CharacterMovementController : MonoBehaviour {
     }
 
     IEnumerator ResetAttacking() {
-        yield return new WaitForSeconds(attackCooldown);
+        yield return new WaitForSeconds(attackDuration);
         isAttacking = false;
     }
 

@@ -10,6 +10,7 @@ public class EnemyMovementController : MonoBehaviour {
     public bool canAttack = true;
     public bool isAttacking = false;
     public float attackCooldown;
+    public float attackDuration;
     public Slider healthBar;
     
     private Transform target;
@@ -93,7 +94,7 @@ public class EnemyMovementController : MonoBehaviour {
     }
 
     IEnumerator ResetAttacking() {
-        yield return new WaitForSeconds(attackCooldown);
+        yield return new WaitForSeconds(attackDuration);
         isAttacking = false;
     }
 
