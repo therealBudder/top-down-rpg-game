@@ -11,6 +11,7 @@ public class EnemyMovementController : MonoBehaviour {
     public bool isAttacking = false;
     public float attackCooldown;
     public float attackDuration;
+    public float range = 25;
     public Slider healthBar;
     
     private Transform target;
@@ -61,7 +62,7 @@ public class EnemyMovementController : MonoBehaviour {
             if (canAttack) {Attack();}
             animator.SetBool("Walk", false);
         }
-        else if (agent.CalculatePath(target.position, navMeshPath) && navMeshPath.status == NavMeshPathStatus.PathComplete) {
+        else if (distance <= range && agent.CalculatePath(target.position, navMeshPath) && navMeshPath.status == NavMeshPathStatus.PathComplete) {
             // agent.SetPath(navMeshPath);
             agent.isStopped = false;
             // animator.SetBool("attacking", false);
