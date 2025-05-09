@@ -5,7 +5,6 @@ using UnityEngine;
 public class EnemyWeaponCollision : MonoBehaviour
 {
     public int damage;
-    public float hitCooldown;
     public EnemyMovementController thisEnemy;
     private CharacterMovementController player;
 
@@ -13,11 +12,11 @@ public class EnemyWeaponCollision : MonoBehaviour
         if (other.tag == "Player" && thisEnemy.isAttacking) {
             player = other.GetComponent<CharacterMovementController>();
             Animator playerAnimator = other.GetComponent<Animator>();
-            if (player.health > 0 && !playerAnimator.GetBool("guarding") && player.canGetHit) {
-                player.canGetHit = false;
+            if (player.health > 0 && !playerAnimator.GetBool("guarding")) {
+                // player.canGetHit = false;
                 playerAnimator.SetTrigger("Get Hit");
                 player.health -= damage;
-                StartCoroutine(ResetHitCooldown());
+                // StartCoroutine(ResetHitCooldown());
             }
             else if (player.health > 0 && playerAnimator.GetBool("guarding")) {
                 playerAnimator.SetTrigger("Block Attack");
@@ -26,8 +25,8 @@ public class EnemyWeaponCollision : MonoBehaviour
         }
     }
 
-    IEnumerator ResetHitCooldown() {
-        yield return new WaitForSeconds(hitCooldown);
-        player.canGetHit = true;
-    }
+    // IEnumerator ResetHitCooldown() {
+    //     yield return new WaitForSeconds(hitCooldown);
+    //     player.canGetHit = true;
+    // }
 }

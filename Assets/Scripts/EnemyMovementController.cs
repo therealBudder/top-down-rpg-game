@@ -9,8 +9,10 @@ public class EnemyMovementController : MonoBehaviour {
 
     public bool canAttack = true;
     public bool isAttacking = false;
+    public bool stunned = false;
     public float attackCooldown;
     public float attackDuration;
+    public float stunDuration;
     public float range = 25;
     public Slider healthBar;
     
@@ -33,6 +35,7 @@ public class EnemyMovementController : MonoBehaviour {
         agent = GetComponent<NavMeshAgent>();
         startingPosition = agent.transform.position;
         print(startingPosition);
+        healthBar.maxValue = maxHealth;
     }
 
     // Update is called once per frame
@@ -59,8 +62,9 @@ public class EnemyMovementController : MonoBehaviour {
         }
         else if (distance < attackDistance && agent.CalculatePath(target.position, navMeshPath) && navMeshPath.status == NavMeshPathStatus.PathComplete) {
             agent.isStopped = true;
-            if (canAttack) {Attack();}
             animator.SetBool("Walk", false);
+            if (canAttack && !isAttacking && !stunned) {Attack();}
+            
         }
         else if (distance <= range && agent.CalculatePath(target.position, navMeshPath) && navMeshPath.status == NavMeshPathStatus.PathComplete) {
             // agent.SetPath(navMeshPath);
@@ -90,12 +94,31 @@ public class EnemyMovementController : MonoBehaviour {
         isAttacking = true;
         canAttack = false;
         animator.SetTrigger("attacking");
+        
+        StartCoroutine(ResetAttacking());
         StartCoroutine(ResetAttackCooldown());
 
     }
 
+    public void GetHit(int damage) {
+
+        stunned = true;
+        
+        if (health > 0) {
+            animator.SetTrigger("Get Hit");
+            
+            health -= damage;
+            StartCoroutine(ResetStun());
+        }
+
+    }
+
+    IEnumerator ResetStun() {
+        yield return new WaitForSeconds(stunDuration);
+        stunned = false;
+    }
+
     IEnumerator ResetAttackCooldown() {
-        StartCoroutine(ResetAttacking());
         yield return new WaitForSeconds(attackCooldown);
         canAttack = true;
     }

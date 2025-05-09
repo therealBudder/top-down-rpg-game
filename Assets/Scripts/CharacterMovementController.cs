@@ -11,12 +11,15 @@ public class CharacterMovementController : MonoBehaviour {
 
     public int maxHealth;
     public int health;
+    public int hitCounter;
+    public float comboDuration;
     
     public GameObject weapon;
     public bool canAttack = true;
     public bool canGetHit = true;
-    public static bool isAttacking = false;
+    public bool isAttacking = false;
     public float attackCooldown = 0.5f;
+    public float comboCooldown = 0.5f;
     public float attackDuration = 0.4f;
 
     public Slider healthBar;
@@ -37,6 +40,7 @@ public class CharacterMovementController : MonoBehaviour {
 
     private void Start() {
         health = maxHealth;
+        healthBar.maxValue = maxHealth;
         animator = GetComponent<Animator>();
 
     }
@@ -88,6 +92,10 @@ public class CharacterMovementController : MonoBehaviour {
             if (attack && canAttack) {
                 Attack();
             }
+
+            if (guard) {
+                hitCounter = 0;
+            }
             animator.SetBool("guarding", guard);
         }
 
@@ -104,19 +112,33 @@ public class CharacterMovementController : MonoBehaviour {
         isAttacking = true;
         canAttack = false;
         animator.SetTrigger("attacking");
-        StartCoroutine(ResetAttackCooldown());
-
+        hitCounter++;
+        
+        StartCoroutine(ResetAttacking());
     }
 
     IEnumerator ResetAttackCooldown() {
-        StartCoroutine(ResetAttacking());
-        yield return new WaitForSeconds(attackCooldown);
+
+        if (hitCounter == 0) {
+            StartCoroutine(ResetHitCounter());
+        }
+        else if (hitCounter >= 5) {
+            hitCounter = 0;
+            yield return new WaitForSeconds(attackCooldown + comboCooldown);
+        }
+        else {yield return new WaitForSeconds(attackCooldown);}
         canAttack = true;
+    }
+
+    IEnumerator ResetHitCounter() {
+        yield return new WaitForSeconds(comboDuration);
+        hitCounter = 0;
     }
 
     IEnumerator ResetAttacking() {
         yield return new WaitForSeconds(attackDuration);
         isAttacking = false;
+        StartCoroutine(ResetAttackCooldown());
     }
 
     void Move() {
