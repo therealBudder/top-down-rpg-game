@@ -84,8 +84,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.1620923, y: 1.2597194, z: 1}
-  m_Center: {x: -0.37394124, y: -0.12985921, z: 0}
+  m_Size: {x: 0.7587157, y: 0.8239014, z: 1}
+  m_Center: {x: -0.39783892, y: 0.08805014, z: 0}
 --- !u!114 &2329191724617951634
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -99,7 +99,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 5
-  hitCooldown: 1
   thisEnemy: {fileID: 5602255533332673220}
 --- !u!1 &707960731803174766
 GameObject:
@@ -621,7 +620,6 @@ GameObject:
   - component: {fileID: 8038425305494277645}
   - component: {fileID: 7194988204756693387}
   - component: {fileID: 6195930781846498723}
-  - component: {fileID: 6229883003950692217}
   m_Layer: 0
   m_Name: SlimeEnemy
   m_TagString: Enemy
@@ -638,7 +636,7 @@ Transform:
   m_GameObject: {fileID: 8292757413209455346}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.98461723, y: 1, z: -13.546918}
+  m_LocalPosition: {x: -49.47, y: 1, z: -28.42}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -682,11 +680,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   canAttack: 1
   isAttacking: 0
-  attackCooldown: 1
-  attackDuration: 0.5
+  stunned: 0
+  attackCooldown: 1.5
+  attackDuration: 0.25
+  stunDuration: 3
   range: 25
   healthBar: {fileID: 7629026116047703877}
-  attackDistance: 1.2
+  attackDistance: 1.6
   maxHealth: 100
   health: 0
 --- !u!195 &8038425305494277645
@@ -761,20 +761,6 @@ CapsuleCollider:
   m_Height: 1.0419736
   m_Direction: 1
   m_Center: {x: 0, y: 0.4313457, z: 0}
---- !u!114 &6229883003950692217
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8292757413209455346}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b6549d60cec50490f871b4b1dca1b8ed, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  character: {fileID: 0}
-  damage: 5
 --- !u!1 &8666244334619514066
 GameObject:
   m_ObjectHideFlags: 0

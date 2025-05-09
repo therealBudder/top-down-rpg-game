@@ -95,6 +95,8 @@ public class CharacterMovementController : MonoBehaviour {
 
             if (guard) {
                 hitCounter = 0;
+                animator.SetBool("walking", false);
+                animator.SetBool("running", false);
             }
             animator.SetBool("guarding", guard);
         }
@@ -111,7 +113,8 @@ public class CharacterMovementController : MonoBehaviour {
 
         isAttacking = true;
         canAttack = false;
-        animator.SetTrigger("attacking");
+        if (hitCounter == 4) {animator.SetTrigger("combo ender");}
+        else {animator.SetTrigger("attacking");}
         hitCounter++;
         
         StartCoroutine(ResetAttacking());
@@ -119,7 +122,7 @@ public class CharacterMovementController : MonoBehaviour {
 
     IEnumerator ResetAttackCooldown() {
 
-        if (hitCounter == 0) {
+        if (hitCounter == 1) {
             StartCoroutine(ResetHitCounter());
         }
         else if (hitCounter >= 5) {
