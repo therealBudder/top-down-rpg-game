@@ -126,7 +126,7 @@ public class EnemyMovementController : MonoBehaviour {
     IEnumerator Knockback() {
         float timer = 0.0f;
 
-        while (timer <= 0.5f) {
+        while (timer <= 0.1f) {
             timer += Time.deltaTime;
             transform.position -= transform.forward * 3 * Time.deltaTime;
             yield return null;

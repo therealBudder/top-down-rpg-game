@@ -1017,12 +1017,12 @@ MonoBehaviour:
   stunned: 0
   attackCooldown: 1
   attackDuration: 1.1
-  stunDuration: 2
+  stunDuration: 1
   range: 25
   xp: 200
   healthBar: {fileID: 7042581105532859767}
   attackDistance: 3
-  maxHealth: 200
+  maxHealth: 500
   health: 0
 --- !u!54 &266585520467133868
 Rigidbody:

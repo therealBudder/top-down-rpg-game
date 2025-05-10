@@ -157,6 +157,7 @@ public class CharacterMovementController : MonoBehaviour {
         hitCounter++;
         
         StartCoroutine(ResetAttacking());
+        StartCoroutine(ResetAttackCooldown());
     }
 
     IEnumerator ResetAttackCooldown() {
@@ -164,7 +165,7 @@ public class CharacterMovementController : MonoBehaviour {
         if (hitCounter == 1) {
             StartCoroutine(ResetHitCounter());
         }
-        else if (hitCounter >= 4) {
+        if (hitCounter >= 4) {
             hitCounter = 0;
             yield return new WaitForSeconds(attackCooldown + comboCooldown);
         }
@@ -180,7 +181,6 @@ public class CharacterMovementController : MonoBehaviour {
     IEnumerator ResetAttacking() {
         yield return new WaitForSeconds(attackDuration);
         isAttacking = false;
-        StartCoroutine(ResetAttackCooldown());
     }
 
     void Move() {
