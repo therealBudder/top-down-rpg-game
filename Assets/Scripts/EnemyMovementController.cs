@@ -14,12 +14,14 @@ public class EnemyMovementController : MonoBehaviour {
     public float attackDuration;
     public float stunDuration;
     public float range = 25;
+    public int xp = 10;
     public Slider healthBar;
     
     private Transform target;
     public float attackDistance;
     public int maxHealth;
     public int health;
+    private bool alive = true;
     
     private Vector3 startingPosition;
     private NavMeshAgent agent;
@@ -54,15 +56,21 @@ public class EnemyMovementController : MonoBehaviour {
 
         if (health <= 0) {
             health = 0;
+            agent.isStopped = true;
             healthBar.gameObject.SetActive(false);
             animator.SetTrigger("Die");
-            // animator.SetBool("attacking", false);
             animator.SetBool("Walk", false);
-            agent.isStopped = true;
+            if (alive) {
+                StartCoroutine(DeleteObject());
+                alive = false;
+            }
         }
         else if (distance < attackDistance && agent.CalculatePath(target.position, navMeshPath) && navMeshPath.status == NavMeshPathStatus.PathComplete) {
             agent.isStopped = true;
             animator.SetBool("Walk", false);
+            Vector3 newDirection = Vector3.RotateTowards(transform.forward, target.position - transform.position, 2 * Time.deltaTime, 0.0f);
+            // Debug.DrawRay(transform.position, newDirection, Color.red);
+            transform.rotation = Quaternion.LookRotation(newDirection);
             if (canAttack && !isAttacking && !stunned) {Attack();}
             
         }
@@ -106,11 +114,24 @@ public class EnemyMovementController : MonoBehaviour {
         
         if (health > 0) {
             animator.SetTrigger("Get Hit");
-            
             health -= damage;
+            
+            
             StartCoroutine(ResetStun());
+            StartCoroutine(Knockback());
         }
 
+    }
+
+    IEnumerator Knockback() {
+        float timer = 0.0f;
+
+        while (timer <= 0.5f) {
+            timer += Time.deltaTime;
+            transform.position -= transform.forward * 3 * Time.deltaTime;
+            yield return null;
+        }
+        
     }
 
     IEnumerator ResetStun() {
@@ -128,10 +149,10 @@ public class EnemyMovementController : MonoBehaviour {
         isAttacking = false;
     }
 
-    // void OnAnimatorMove() {
-    //     if (animator.GetBool("Attack") == false) {
-    //         
-    //     }
-    // }
+    IEnumerator DeleteObject() {
+        yield return new WaitForSeconds(3);
+        target.GetComponent<CharacterMovementController>().xp += xp;
+        Destroy(gameObject);
+    }
     
 }

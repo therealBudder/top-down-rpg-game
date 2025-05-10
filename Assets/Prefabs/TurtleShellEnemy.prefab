@@ -1080,7 +1080,8 @@ MonoBehaviour:
   attackCooldown: 1.5
   attackDuration: 0.5
   stunDuration: 3
-  range: 25
+  range: 20
+  xp: 25
   healthBar: {fileID: 6564999006380764664}
   attackDistance: 2
   maxHealth: 100

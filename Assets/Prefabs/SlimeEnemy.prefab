@@ -684,10 +684,11 @@ MonoBehaviour:
   attackCooldown: 1.5
   attackDuration: 0.25
   stunDuration: 3
-  range: 25
+  range: 15
+  xp: 15
   healthBar: {fileID: 7629026116047703877}
   attackDistance: 1.6
-  maxHealth: 100
+  maxHealth: 50
   health: 0
 --- !u!195 &8038425305494277645
 NavMeshAgent:

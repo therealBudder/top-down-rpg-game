@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
@@ -13,8 +14,13 @@ public class CharacterMovementController : MonoBehaviour {
     public int health;
     public int hitCounter;
     public float comboDuration;
+    public int maxXp = 100;
+    public int xp = 0;
+    public int level = 1;
+    public Text levelText;
     
     public GameObject weapon;
+    public WeaponCollision weaponController;
     public bool canAttack = true;
     public bool canGetHit = true;
     public bool isAttacking = false;
@@ -23,6 +29,7 @@ public class CharacterMovementController : MonoBehaviour {
     public float attackDuration = 0.4f;
 
     public Slider healthBar;
+    public Slider xpBar;
     
     private Rigidbody rigidBody;
     // private float mouseY;
@@ -39,9 +46,10 @@ public class CharacterMovementController : MonoBehaviour {
     private Animator animator;
 
     private void Start() {
+        xp = 0;
         health = maxHealth;
-        healthBar.maxValue = maxHealth;
         animator = GetComponent<Animator>();
+        weaponController = weapon.gameObject.GetComponent<WeaponCollision>();
 
     }
 
@@ -49,22 +57,53 @@ public class CharacterMovementController : MonoBehaviour {
         rigidBody = GetComponent<Rigidbody>();
     }
     
-    private void OnEnable ()
-    {
-        rigidBody.isKinematic = false;
-    }
-    
-    private void OnDisable ()
-    {
-        rigidBody.isKinematic = true;
-    }
+    // private void OnEnable ()
+    // {
+    //     rigidBody.isKinematic = false;
+    // }
+    //
+    // private void OnDisable ()
+    // {
+    //     rigidBody.isKinematic = true;
+    // }
 
     // Update is called once per frame
-    void Update() {
+
+    void LevelUp() {
+        xp -= maxXp;
+        maxXp = (int)(maxXp * 1.5);
+        level++;
+        levelText.text = "Level " + level;
+        maxHealth = (int)(maxHealth * 1.2);
+        health = maxHealth;
+        xpBar.maxValue = maxXp;
+        weaponController.damage = (int)(weaponController.damage * 1.5);
+        
+        UpdateHealth();
+    }
+    
+    void UpdateXp() {
+        
+        if (xp >= maxXp) {
+            LevelUp();
+        }
+        
+        xpBar.value = xp;
+    }
+
+    void UpdateHealth() {
         
         if (health < 0) {health = 0;}
+        healthBar.maxValue = maxHealth;
         healthBar.value = health;
-
+        
+    }
+    
+    void Update() {
+        
+        UpdateXp();
+        UpdateHealth();
+        
         if (health <= 0) {
             animator.SetTrigger("Die");
         }
@@ -113,7 +152,7 @@ public class CharacterMovementController : MonoBehaviour {
 
         isAttacking = true;
         canAttack = false;
-        if (hitCounter == 4) {animator.SetTrigger("combo ender");}
+        if (hitCounter == 3) {animator.SetTrigger("combo ender");}
         else {animator.SetTrigger("attacking");}
         hitCounter++;
         
@@ -125,7 +164,7 @@ public class CharacterMovementController : MonoBehaviour {
         if (hitCounter == 1) {
             StartCoroutine(ResetHitCounter());
         }
-        else if (hitCounter >= 5) {
+        else if (hitCounter >= 4) {
             hitCounter = 0;
             yield return new WaitForSeconds(attackCooldown + comboCooldown);
         }
