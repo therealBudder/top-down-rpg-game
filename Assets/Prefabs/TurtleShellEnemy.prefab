@@ -1031,7 +1031,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5956716486673738519}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -35.322502, y: -16.181395, z: -1.2340641}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1079,11 +1079,11 @@ MonoBehaviour:
   stunned: 0
   attackCooldown: 1.5
   attackDuration: 0.5
-  stunDuration: 3
+  stunDuration: 2
   range: 20
   xp: 25
   healthBar: {fileID: 6564999006380764664}
-  attackDistance: 2
+  attackDistance: 1.7
   maxHealth: 100
   health: 0
 --- !u!195 &6829591675483054549

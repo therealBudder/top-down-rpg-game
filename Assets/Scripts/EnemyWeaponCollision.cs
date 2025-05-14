@@ -12,13 +12,13 @@ public class EnemyWeaponCollision : MonoBehaviour
         if (other.tag == "Player" && thisEnemy.isAttacking) {
             player = other.GetComponent<CharacterMovementController>();
             Animator playerAnimator = other.GetComponent<Animator>();
-            if (player.health > 0 && !playerAnimator.GetBool("guarding")) {
+            if (player.health > 0 && !playerAnimator.GetBool("guarding") && player.canGetHit) {
                 // player.canGetHit = false;
                 playerAnimator.SetTrigger("Get Hit");
                 player.health -= damage;
                 // StartCoroutine(ResetHitCooldown());
             }
-            else if (player.health > 0 && playerAnimator.GetBool("guarding")) {
+            else if (player.health > 0 && playerAnimator.GetBool("guarding") && player.canGetHit) {
                 playerAnimator.SetTrigger("Block Attack");
             }
             

@@ -39,7 +39,7 @@ public class CharacterMovementController : MonoBehaviour {
     private float yMovement;
 
     private bool run;
-    private bool jump;
+    private bool dodge;
     private bool attack;
     private bool guard;
 
@@ -69,15 +69,15 @@ public class CharacterMovementController : MonoBehaviour {
 
     // Update is called once per frame
 
-    void LevelUp() {
+    public void LevelUp() {
         xp -= maxXp;
         maxXp = (int)(maxXp * 1.5);
         level++;
         levelText.text = "Level " + level;
-        maxHealth = (int)(maxHealth * 1.2);
+        maxHealth = (int)(maxHealth * 1.4);
         health = maxHealth;
         xpBar.maxValue = maxXp;
-        weaponController.damage = (int)(weaponController.damage * 1.5);
+        weaponController.damage = (int)(weaponController.damage * 1.4);
         
         UpdateHealth();
     }
@@ -112,7 +112,7 @@ public class CharacterMovementController : MonoBehaviour {
             yMovement = Input.GetAxis("Vertical");
         
             run = Input.GetKey(KeyCode.LeftShift);
-            jump = Input.GetKeyDown(KeyCode.Space);
+            dodge = Input.GetKeyDown(KeyCode.Space);
             attack = Input.GetKeyDown(KeyCode.Mouse0);
             guard = Input.GetKey(KeyCode.Mouse1);
 
@@ -125,9 +125,12 @@ public class CharacterMovementController : MonoBehaviour {
                 animator.SetBool("walking", false);
                 animator.SetBool("running", false);
             }
-
-        
-            animator.SetBool("jumping", jump);
+            
+            animator.SetBool("dodge", dodge);
+            if (dodge) {
+                Dodge();
+            }
+            
             if (attack && canAttack) {
                 Attack();
             }
@@ -145,6 +148,28 @@ public class CharacterMovementController : MonoBehaviour {
     private void FixedUpdate() {
         
         Move();
+        
+    }
+
+    private void Dodge() {
+        canGetHit = false;
+        StartCoroutine(ResetInvulnerability());
+        StartCoroutine(Roll());
+    }
+
+    IEnumerator ResetInvulnerability() {
+        yield return new WaitForSeconds(1);
+        canGetHit = true;
+    }
+    
+    IEnumerator Roll() {
+        float timer = 0.0f;
+
+        while (timer <= 0.4f) {
+            timer += Time.deltaTime;
+            transform.position += transform.forward * 1 * Time.deltaTime;
+            yield return null;
+        }
         
     }
 
